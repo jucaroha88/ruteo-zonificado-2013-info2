@@ -4,41 +4,37 @@
  */
 package edu.uca.info2.application;
 
-import aimax.osm.data.entities.MapNode;
 import aimax.osm.viewer.MapViewFrame;
-import edu.uca.info2.components.Zone;
-import edu.uca.info2.components.ZoneRestriction;
+import edu.uca.info2.components.Area;
+import edu.uca.info2.components.Area;
 import edu.uca.info2.map.ZAMap;
+import edu.uca.info2.util.FileUtils;
+import edu.uca.info2.util.JsonUtils;
 import edu.uca.info2.viewer.ZAEntityRenderer;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.List;
+import java.util.List;
 
 /**
- *
+ *  Aplicacion para visualizar las zonas y las areas descritas en los json
+ * 
  * @author Toshiba
  */
 public class ZonasYAreas {
     private static MapViewFrame frame;
     
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException,IOException{
         inicializarFrame();
         ZAMap map = (ZAMap)frame.getView().getMap();
-        long[] posis = {250042889,250054645,314446095, 319483759,
-                        314446095, 319483759, 1439400386, 593976739,
-                        1439400386, 593976739, 59712800, 613343696,
         
-                        250042803,
-                        312457840,
-                        314446085,
-                        330747283,
-                        692261833,
-                        1440628204
-                        };
+        //zonas desde json
+        map.loadZonesFromJson(FileUtils.getContent("zones.json"));
         
-        map.addZone(new Zone(250042889,250054645,314446095, 319483759,"leZone1",null,map));
-        map.addZone(new Zone(314446095, 319483759, 1439400386, 593976739,"leZone2",null,map));
-        map.addZone(new Zone(1439400386, 593976739, 59712800, 613343696,"leZone3",null,map));
-        
+        //areas desde json
+        map.loadAreasFromJson(FileUtils.getContent("areas.json"));
     }
     
     private static void inicializarFrame(){
@@ -46,8 +42,6 @@ public class ZonasYAreas {
         frame.getView().setMap(new ZAMap());
         frame.getView().setRenderer(new ZAEntityRenderer());
         frame.readMap(new File("asu.osm"));
-        ZAMap map = (ZAMap) frame.getView().getMap();
-        //map.addZone(new zone(0,0,0,0,"le test zone", null));
         frame.setTitle("Zonas y Areas");
         frame.setSize(800, 600);
         frame.setVisible(true);

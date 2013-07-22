@@ -38,7 +38,6 @@ public class ZAEntityRenderer extends DefaultEntityRenderer {
                         transformer.y(zone.getLat2()),
                         transformer.x(zone.getLon1()),
                         transformer.y(zone.getLat1()));
-            System.out.println(zone.getZoneId()+" Lat: "+zone.getLat1()+" Lon: "+zone.getLon1());
         }
     }
 }
