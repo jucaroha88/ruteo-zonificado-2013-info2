@@ -1,3 +1,4 @@
-.class
-.xml
-.properties
+*.class
+*.xml
+*.properties
+*.swp
