@@ -9,7 +9,6 @@ import edu.uca.info2.components.Area;
 import edu.uca.info2.components.Area;
 import edu.uca.info2.map.ZAMap;
 import edu.uca.info2.util.FileUtils;
-import edu.uca.info2.util.JsonUtils;
 import edu.uca.info2.viewer.ZAEntityRenderer;
 import java.io.File;
 import java.io.FileNotFoundException;
