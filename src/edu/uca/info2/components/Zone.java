@@ -13,13 +13,13 @@ public class Zone {
     public Zone() {
     }
 
-    public Zone(long lat1, long lon1, long lat2, long lon2, String zone_id, ZoneRestriction zone_restriction, ZAMap map) {
+    public Zone(long lat1, long lon1, long lat2, long lon2, String zoneId, ZoneRestriction zoneRestriction, ZAMap map) {
         y1 = lat1;
         x1 = lon1;
         y2 = lat2;
         x2 = lon2;
-        zoneId = zone_id;
-        restriction = zone_restriction;
+        this.zoneId = zoneId;
+        this.restriction = zoneRestriction;
         this.map = map;
     }
 

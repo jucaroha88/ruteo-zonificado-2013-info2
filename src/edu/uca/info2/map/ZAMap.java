@@ -19,22 +19,23 @@ import java.util.Hashtable;
  * @author Toshiba
  */
 public class ZAMap extends DefaultMap {
-    private Hashtable<String,Zone> zones;
-    private Hashtable<Long,Area> areas;
+
+    private Hashtable<String, Zone> zones;
+    private Hashtable<Long, Area> areas;
 
     public ZAMap() {
-        this.zones = new Hashtable<String,Zone>();
-        this.areas = new Hashtable<Long,Area>();
+        this.zones = new Hashtable<String, Zone>();
+        this.areas = new Hashtable<Long, Area>();
     }
 
-    public void addZone(Zone zone){
+    public void addZone(Zone zone) {
         zones.put(zone.getZoneId(), zone);
     }
-    
-    public void addArea(Area area){
+
+    public void addArea(Area area) {
         areas.put(area.getCenterNodeId(), area);
     }
-        
+
     public Collection<Zone> getZones() {
         return zones.values();
     }
@@ -42,22 +43,24 @@ public class ZAMap extends DefaultMap {
     public Collection<Area> getAreas() {
         return areas.values();
     }
-    
-    public void loadZonesFromJson(String jsonstr){
-        Gson gson=new Gson();
-        Type collectionType = new TypeToken<ArrayList<Zone>>(){}.getType();
+
+    public void loadZonesFromJson(String jsonstr) {
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<ArrayList<Zone>>() {
+        }.getType();
         ArrayList<Zone> zones = gson.fromJson(jsonstr, collectionType);
-        for(Zone zone : zones){
+        for (Zone zone : zones) {
             zone.setMap(this);
             addZone(zone);
         }
     }
-    
-    public void loadAreasFromJson(String jsonstr){
-        Gson gson=new Gson();
-        Type collectionType = new TypeToken<ArrayList<Area>>(){}.getType();
+
+    public void loadAreasFromJson(String jsonstr) {
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<ArrayList<Area>>() {
+        }.getType();
         ArrayList<Area> areas = gson.fromJson(jsonstr, collectionType);
-        for(Area area : areas){
+        for (Area area : areas) {
             addArea(area);
         }
     }
