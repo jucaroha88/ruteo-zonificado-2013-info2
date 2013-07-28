@@ -66,23 +66,9 @@ public class Area {
         
         /* busca los nodos dentro de su rango y los agrega a su lista de nodos */
         public void findNodes(){
-            /*
-            //buscamos nodos
-            DefaultEntityFinder ef = new DefaultEntityFinder(this.map);
-            //ef.setMinRadius(1);
-            //ef.setMaxRadius(5);
-            ef.findNode("", new Position(map.getNode(centerNodeId)));
-            List<MapEntity> entities=ef.getResults();
-            //agregamos a la lista de nodos
-            this.nodos = new ArrayList<MapNode>();
-            for(MapEntity entity : entities){
-                this.nodos.add((MapNode)entity);
-            }
-            */
             this.nodos = new ArrayList<MapNode>();
             MapNode centernode = map.getNode(centerNodeId);
             for(MapWay mapway : map.getWays(new BoundingBox())){
-                //this.nodos.addAll(mapway.getNodes());
                 for(MapNode nodo : mapway.getNodes()){
                     if(new Position(nodo).getDistKM(centernode) < 1){
                         this.nodos.add(nodo);
