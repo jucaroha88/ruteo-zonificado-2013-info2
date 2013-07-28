@@ -61,7 +61,9 @@ public class ZAMap extends DefaultMap {
         }.getType();
         ArrayList<Area> areas = gson.fromJson(jsonstr, collectionType);
         for (Area area : areas) {
+            area.setMap(this);
             addArea(area);
+            area.findNodes();
         }
     }
 }
