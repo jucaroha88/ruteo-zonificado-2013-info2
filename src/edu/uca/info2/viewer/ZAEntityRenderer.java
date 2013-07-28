@@ -32,6 +32,7 @@ public class ZAEntityRenderer extends DefaultEntityRenderer {
             for(long nodeid : nodesids){
                 Position pos = new Position(map.getNode(nodeid));
                 drawXcita(transformer.x(pos.getLon()), transformer.y(pos.getLat()), 3);
+                //System.out.println("Lat: "+pos.getLat()+"Lon: "+pos.getLon());
             }
             
             g2.drawLine(transformer.x(zone.getLon1()),

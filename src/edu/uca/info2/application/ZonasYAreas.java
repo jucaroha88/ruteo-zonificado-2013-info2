@@ -4,17 +4,11 @@
  */
 package edu.uca.info2.application;
 
-import aimax.osm.viewer.MapViewFrame;
-import edu.uca.info2.components.Area;
-import edu.uca.info2.components.Area;
 import edu.uca.info2.map.ZAMap;
 import edu.uca.info2.util.FileUtils;
-import edu.uca.info2.viewer.ZAEntityRenderer;
-import java.io.File;
+import edu.uca.info2.viewer.ZAMapViewFrame;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.List;
-import java.util.List;
 
 /**
  *  Aplicacion para visualizar las zonas y las areas descritas en los json
@@ -22,7 +16,7 @@ import java.util.List;
  * @author Toshiba
  */
 public class ZonasYAreas {
-    private static MapViewFrame frame;
+    private static ZAMapViewFrame frame;
     
     
     public static void main(String[] args) throws FileNotFoundException,IOException{
@@ -37,12 +31,6 @@ public class ZonasYAreas {
     }
     
     private static void inicializarFrame(){
-        frame = new MapViewFrame();
-        frame.getView().setMap(new ZAMap());
-        frame.getView().setRenderer(new ZAEntityRenderer());
-        frame.readMap(new File("asu.osm"));
-        frame.setTitle("Zonas y Areas");
-        frame.setSize(800, 600);
-        frame.setVisible(true);
+        frame = new ZAMapViewFrame();
     }
 }
