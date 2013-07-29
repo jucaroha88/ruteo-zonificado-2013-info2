@@ -4,6 +4,7 @@
  */
 package edu.uca.info2.map;
 
+import aimax.osm.data.entities.MapNode;
 import aimax.osm.data.impl.DefaultMap;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -19,6 +20,8 @@ import java.util.Hashtable;
  * @author Toshiba
  */
 public class ZAMap extends DefaultMap {
+    
+    private MapNode selectedNode;
 
     private Hashtable<String, Zone> zones;
     private Hashtable<Long, Area> areas;
@@ -43,6 +46,15 @@ public class ZAMap extends DefaultMap {
     public Collection<Area> getAreas() {
         return areas.values();
     }
+    
+    public MapNode getSelectedNode() {
+        return selectedNode;
+    }
+
+    public void setSelectedNode(MapNode selectedNode) {
+        this.selectedNode = selectedNode;
+    }
+    
 
     public void loadZonesFromJson(String jsonstr) {
         Gson gson = new Gson();

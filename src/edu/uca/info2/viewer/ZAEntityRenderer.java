@@ -31,8 +31,7 @@ public class ZAEntityRenderer extends DefaultEntityRenderer {
             long nodesids[] = { zone.getX1(), zone.getX2(), zone.getY1(), zone.getY2()};
             for(long nodeid : nodesids){
                 Position pos = new Position(map.getNode(nodeid));
-                drawXcita(transformer.x(pos.getLon()), transformer.y(pos.getLat()), 3);
-                //System.out.println("Lat: "+pos.getLat()+"Lon: "+pos.getLon());
+                drawXcita(transformer.x(pos.getLon()), transformer.y(pos.getLat()), 8);
             }
             
             g2.drawLine(transformer.x(zone.getLon1()),
@@ -66,14 +65,24 @@ public class ZAEntityRenderer extends DefaultEntityRenderer {
             g2.setColor(Color.MAGENTA);
             for(MapNode nodo : area.getNodos()){
                 Position pos = new Position(nodo);
-                g2.drawOval(transformer.x(pos.getLon()), transformer.y(pos.getLat()), 3, 3);
+                drawCirculito(transformer.x(pos.getLon()), transformer.y(pos.getLat()));
             }
+        }
+        if( map.getSelectedNode() != null ){
+            g2.setColor(Color.CYAN);
+            Position pos = new Position(map.getSelectedNode());
+            drawCirculito( transformer.x(pos.getLon()) , transformer.y(pos.getLat()));
         }
     }
     
     /* dibuja una "X" chiquita, usada para marcar los limites de los rectangulos */
     private void drawXcita(int x, int y, int width){
-        g2.drawLine(x-width, y-width, x+width, y+width);
-        g2.drawLine(x+width, y-width, x-width, y+width);
+        int halfwidth=width/2;
+        g2.drawLine(x-halfwidth, y-halfwidth, x+halfwidth, y+halfwidth);
+        g2.drawLine(x+halfwidth, y-halfwidth, x-halfwidth, y+halfwidth);
+    }
+    
+    private void drawCirculito(int x, int y){
+        g2.drawOval(x-2, y-2, 4, 4);
     }
 }
