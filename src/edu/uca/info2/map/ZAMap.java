@@ -10,6 +10,10 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import edu.uca.info2.components.Area;
 import edu.uca.info2.components.Zone;
+import edu.uca.info2.components.ZoneRestriction;
+import edu.uca.info2.util.FileUtils;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -55,6 +59,11 @@ public class ZAMap extends DefaultMap {
         this.selectedNode = selectedNode;
     }
     
+    public void loadElementsFromJson() throws FileNotFoundException, IOException {
+        loadZonesFromJson(FileUtils.getContent("zones.json"));
+        loadZoneRestrictionsFromJson(FileUtils.getContent("restrictions.json"));
+        loadAreasFromJson(FileUtils.getContent("areas.json"));
+    }
 
     public void loadZonesFromJson(String jsonstr) {
         Gson gson = new Gson();
@@ -64,6 +73,16 @@ public class ZAMap extends DefaultMap {
         for (Zone zone : zones) {
             zone.setMap(this);
             addZone(zone);
+        }
+    }
+    
+    public void loadZoneRestrictionsFromJson(String jsonstr){
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<ArrayList<ZoneRestriction>>() {
+        }.getType();
+        ArrayList<ZoneRestriction> zonerestrictions = gson.fromJson(jsonstr,collectionType);
+        for(ZoneRestriction zonerestriction : zonerestrictions){
+            zones.get(zonerestriction.getZoneId()).setRestriction(zonerestriction);
         }
     }
 
@@ -76,6 +95,7 @@ public class ZAMap extends DefaultMap {
             area.setMap(this);
             addArea(area);
             area.findNodes();
+            area.findZone();
         }
     }
 }

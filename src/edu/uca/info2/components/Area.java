@@ -2,15 +2,20 @@ package edu.uca.info2.components;
 
 import aimax.osm.data.BoundingBox;
 import aimax.osm.data.Position;
-import aimax.osm.data.entities.MapEntity;
 import aimax.osm.data.entities.MapNode;
 import aimax.osm.data.entities.MapWay;
-import aimax.osm.data.impl.DefaultEntityFinder;
 import edu.uca.info2.map.ZAMap;
 import java.util.ArrayList;
 import java.util.List;
+import jpl.Atom;
+import jpl.Compound;
+import jpl.Term;
 
 public class Area {
+    
+        private float costo; //costo de recorrer el area en km 
+    
+        private Zone zone;
 	
         private ZAMap map;
 
@@ -75,5 +80,42 @@ public class Area {
                     }
                 }
             }
+        }
+        
+        /*
+         * establece la zona en la que se encuentra, basandose en las zonas de su mapa.
+         */
+        public void findZone(){
+            for(Zone zona : map.getZones()){
+                float latmin=zona.getLat1();
+                float latmax=zona.getLat2();
+                float lonmin=zona.getLon1();
+                float lonmax=zona.getLon2();
+                //intercambiamos las coordenadas min y max para el caso de que esten al revez
+                if(latmin>latmax){
+                    float aux=latmin;
+                    latmin=latmax;
+                    latmax=aux;
+                }
+                if(lonmin>lonmax){
+                    float aux=lonmin;
+                    lonmin=lonmax;
+                    lonmax=aux;
+                }
+                float lat=getLat();
+                float lon=getLon();
+                //establecemos la zona si el area pertenece a esta
+                if( latmin<=lat && lat<=latmax && lonmin<=lon && lon<=lonmax){
+                    this.zone=zona;
+                    break;
+                }
+            }
+        }
+        
+        public Compound toPlCompoundTerm(){
+            return new Compound("zona", new Term[]{ new Atom(Long.toString(centerNodeId)),
+                                                     new Atom(Float.toString(costo)),
+                                                     new Atom(Integer.toString(zone.getRestriction().getStartTime())),
+                                                     new Atom(Integer.toString(zone.getRestriction().getEndTime())) });
         }
 }

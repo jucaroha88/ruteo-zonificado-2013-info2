@@ -22,12 +22,7 @@ public class ZonasYAreas {
     public static void main(String[] args) throws FileNotFoundException,IOException{
         inicializarFrame();
         ZAMap map = (ZAMap)frame.getView().getMap();
-        
-        //zonas desde json
-        map.loadZonesFromJson(FileUtils.getContent("zones.json"));
-        
-        //areas desde json
-        map.loadAreasFromJson(FileUtils.getContent("areas.json"));
+        map.loadElementsFromJson();
     }
     
     private static void inicializarFrame(){
