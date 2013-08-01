@@ -6,6 +6,7 @@ package edu.uca.info2.prolog;
 
 import edu.uca.info2.components.Area;
 import edu.uca.info2.components.Vehicle;
+import jpl.Term;
 
 /**
  *
@@ -15,7 +16,11 @@ public class AsignacionVehiculoAreaHora {
     Vehicle vehiculo;
     Area area;
     int hora;
-
+    
+    public AsignacionVehiculoAreaHora(Term term){
+        
+    }
+    
     public AsignacionVehiculoAreaHora(Vehicle vehiculo, Area area, int hora) {
         this.vehiculo = vehiculo;
         this.area = area;

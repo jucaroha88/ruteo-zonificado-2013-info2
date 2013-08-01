@@ -20,12 +20,8 @@ public class ZonasYAreas {
     
     
     public static void main(String[] args) throws FileNotFoundException,IOException{
-        inicializarFrame();
+        frame = new ZAMapViewFrame();
         ZAMap map = (ZAMap)frame.getView().getMap();
         map.loadElementsFromJson();
-    }
-    
-    private static void inicializarFrame(){
-        frame = new ZAMapViewFrame();
     }
 }
