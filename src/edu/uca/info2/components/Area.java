@@ -11,20 +11,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Area {
-	
-        private ZAMap map;
+
+	private ZAMap map;
 
 	private long centerNodeId;
-	
-	private int radius;
-        
-        private List<MapNode> nodos;
 
-	
+	private int radius;
+
+	private List<MapNode> nodos;
+
 	public Area(long centerNodeId) {
 		setCenterNodeId(centerNodeId);
 		setRadius(1);
-                this.nodos=new ArrayList<MapNode>();
+		this.nodos = new ArrayList<MapNode>();
 	}
 
 	public long getCenterNodeId() {
@@ -42,38 +41,43 @@ public class Area {
 	public void setRadius(int radius) {
 		this.radius = radius;
 	}
-        
-        public float getLat(){
-            return new Position(map.getNode(centerNodeId)).getLat();
-        }
-        
-        public float getLon(){
-            return new Position(map.getNode(centerNodeId)).getLon();
-        }
-	
-	public String toString() {
-		
-		return " Area: center: " + getCenterNodeId() + " radius: " + getRadius(); 
+
+	public float getLat() {
+		return new Position(map.getNode(centerNodeId)).getLat();
 	}
-        
-        public List<MapNode> getNodos() {
-            return nodos;
-        }
-        
-        public void setMap(ZAMap map) {
-            this.map = map;
-        }
-        
-        /* busca los nodos dentro de su rango y los agrega a su lista de nodos */
-        public void findNodes(){
-            this.nodos = new ArrayList<MapNode>();
-            MapNode centernode = map.getNode(centerNodeId);
-            for(MapWay mapway : map.getWays(new BoundingBox())){
-                for(MapNode nodo : mapway.getNodes()){
-                    if(new Position(nodo).getDistKM(centernode) < 1){
-                        this.nodos.add(nodo);
-                    }
-                }
-            }
-        }
+
+	public float getLon() {
+		return new Position(map.getNode(centerNodeId)).getLon();
+	}
+
+	public String toString() {
+
+		return " Area: center: " + getCenterNodeId() + " radius: "
+				+ getRadius();
+	}
+
+	public List<MapNode> getNodos() {
+		return nodos;
+	}
+
+	public void setMap(ZAMap map) {
+		this.map = map;
+	}
+
+	/* busca los nodos dentro de su rango y los agrega a su lista de nodos */
+	public void findNodes() {
+		this.nodos = new ArrayList<MapNode>();
+		MapNode centernode = map.getNode(centerNodeId);
+		for (MapWay mapway : map.getWays(new BoundingBox())) {
+			for (MapNode nodo : mapway.getNodes()) {
+				if (new Position(nodo).getDistKM(centernode) < radius) {
+					this.nodos.add(nodo);
+				}
+			}
+		}
+	}
+	
+	public boolean isNodeInArea(MapNode node) {
+		return this.nodos.contains(node);
+	}
 }
