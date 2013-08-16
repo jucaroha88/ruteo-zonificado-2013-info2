@@ -106,7 +106,7 @@ public class PrologWrapper {
         ArrayList<Vehicle> vehiculos = Vehicle.loadListFromJson(FileUtils.getContent("vehicles.json"));
         ZAMapViewFrame frame = new ZAMapViewFrame();
         ZAMap map = (ZAMap)frame.getView().getMap();
-        map.loadElementsFromJson();
+        //map.loadElementsFromJson();
         PrologWrapper prologuito = new PrologWrapper(map.getAreas(),vehiculos);
         prologuito.consultar();
     }

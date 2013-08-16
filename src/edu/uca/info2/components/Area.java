@@ -6,6 +6,7 @@ import aimax.osm.data.entities.MapNode;
 import aimax.osm.data.entities.MapWay;
 import edu.uca.info2.map.ZAMap;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import jpl.Atom;
 import jpl.Compound;
@@ -23,7 +24,6 @@ public class Area {
     public Area(long centerNodeId) {
         setCenterNodeId(centerNodeId);
         setRadius(1);
-        this.nodos = new ArrayList<MapNode>();
     }
 
     public long getCenterNodeId() {
@@ -69,7 +69,7 @@ public class Area {
 
     /* busca los nodos dentro de su rango y los agrega a su lista de nodos */
     public void findNodes() {
-        this.nodos = new ArrayList<MapNode>();
+        this.nodos = Collections.synchronizedList(new ArrayList<MapNode>());
         MapNode centernode = map.getNode(centerNodeId);
         for (MapWay mapway : map.getWays(new BoundingBox())) {
             for (MapNode nodo : mapway.getNodes()) {

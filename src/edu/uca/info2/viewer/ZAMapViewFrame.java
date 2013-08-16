@@ -31,7 +31,7 @@ public class ZAMapViewFrame extends MapViewFrame{
         
         getView().setMap(new ZAMap());
         getView().setRenderer(new ZAEntityRenderer());
-        readMap(new File("asu.osm"));
+        //readMap(new File("asu.osm"));
         setTitle("Zonas y Areas");
         setSize(800, 600);
         setVisible(true);

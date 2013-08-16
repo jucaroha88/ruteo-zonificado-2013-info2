@@ -4,14 +4,18 @@
  */
 package edu.uca.info2.map;
 
+import aimax.osm.data.MapBuilder;
 import aimax.osm.data.entities.MapNode;
 import aimax.osm.data.impl.DefaultMap;
+import aimax.osm.reader.Bz2OsmReader;
+import aimax.osm.viewer.MapStyleFactory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import edu.uca.info2.components.Area;
 import edu.uca.info2.components.Zone;
 import edu.uca.info2.components.ZoneRestriction;
 import edu.uca.info2.util.FileUtils;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -25,6 +29,8 @@ import java.util.Hashtable;
  */
 public class ZAMap extends DefaultMap {
     
+    private static final String MAP_FILE_NAME = "asu.osm";
+    
     private MapNode selectedNode;
 
     private Hashtable<String, Zone> zones;
@@ -33,6 +39,12 @@ public class ZAMap extends DefaultMap {
     public ZAMap() {
         this.zones = new Hashtable<String, Zone>();
         this.areas = new Hashtable<Long, Area>();
+        readMap(new File(MAP_FILE_NAME));
+        try{
+            loadElementsFromJson();
+        }catch(IOException e){
+            System.err.println("problemas al cargar los elementos del json");
+        }
     }
 
     public void addZone(Zone zone) {
@@ -59,13 +71,20 @@ public class ZAMap extends DefaultMap {
         this.selectedNode = selectedNode;
     }
     
-    public void loadElementsFromJson() throws FileNotFoundException, IOException {
+    protected void readMap(File file) {
+            MapBuilder builder = getBuilder();
+            builder.setEntityClassifier(new MapStyleFactory().createDefaultClassifier());
+            (new Bz2OsmReader()).readMap(file, builder);
+            builder.buildMap();
+    }
+    
+    protected void loadElementsFromJson() throws FileNotFoundException, IOException {
         loadZonesFromJson(FileUtils.getContent("zones.json"));
         loadZoneRestrictionsFromJson(FileUtils.getContent("restrictions.json"));
         loadAreasFromJson(FileUtils.getContent("areas.json"));
     }
 
-    public void loadZonesFromJson(String jsonstr) {
+    protected void loadZonesFromJson(String jsonstr) {
         Gson gson = new Gson();
         Type collectionType = new TypeToken<ArrayList<Zone>>() {
         }.getType();
@@ -76,7 +95,7 @@ public class ZAMap extends DefaultMap {
         }
     }
     
-    public void loadZoneRestrictionsFromJson(String jsonstr){
+    protected void loadZoneRestrictionsFromJson(String jsonstr){
         Gson gson = new Gson();
         Type collectionType = new TypeToken<ArrayList<ZoneRestriction>>() {
         }.getType();
@@ -86,7 +105,7 @@ public class ZAMap extends DefaultMap {
         }
     }
 
-    public void loadAreasFromJson(String jsonstr) {
+    protected void loadAreasFromJson(String jsonstr) {
         Gson gson = new Gson();
         Type collectionType = new TypeToken<ArrayList<Area>>() {
         }.getType();
