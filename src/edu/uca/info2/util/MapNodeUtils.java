@@ -11,7 +11,7 @@ import aimax.osm.data.entities.MapWay;
 import aimax.osm.data.entities.WayRef;
 
 public class MapNodeUtils {
-	
+
 	private static boolean ignoreOneWays;
 
 	public static boolean isIgnoreOneWays() {
@@ -25,7 +25,7 @@ public class MapNodeUtils {
 	public static List<MapNode> neighborsForNode(MapNode node, Area area) {
 		List<MapNode> neighbors = new ArrayList<MapNode>();
 		MapWayFilter filter = MapWayAttFilter.createCarWayFilter();
-		
+
 		for (WayRef wref : node.getWayRefs()) {
 			if (filter == null || filter.isAccepted(wref.getWay())) {
 				MapWay way = wref.getWay();
@@ -35,17 +35,14 @@ public class MapNodeUtils {
 
 				for (int idx = nodeIdx + 1; idx < wayNodes.size(); idx++) {
 					to = wayNodes.get(idx);
-					
+
 					// Si el nodo to esta fuera del area continuamos
 					if (!area.isNodeInArea(to)) {
 						continue;
 					}
-					
+
 					if (to.getWayRefs().size() > 1
 							|| idx == wayNodes.size() - 1) {
-						// segments.add(new SimpleEntry<MapNode, MapNode>(node,
-						// to));
-						// result.add(new OsmMoveAction(way, node, to));
 						neighbors.add(to);
 						break;
 					}
@@ -53,16 +50,13 @@ public class MapNodeUtils {
 				if (!way.isOneway() || ignoreOneWays) {
 					for (int idx = nodeIdx - 1; idx >= 0; idx--) {
 						to = wayNodes.get(idx);
-						
+
 						// Si el nodo to esta fuera del area continuamos
 						if (!area.isNodeInArea(to)) {
 							continue;
 						}
-						
+
 						if (to.getWayRefs().size() > 1 || idx == 0) {
-							// segments.add(new SimpleEntry<MapNode, MapNode>(
-							// node, to));
-							// result.add(new OsmMoveAction(way, node, to));
 							neighbors.add(to);
 							break;
 						}
@@ -70,7 +64,7 @@ public class MapNodeUtils {
 				}
 			}
 		}
-		
+
 		return neighbors;
 	}
 
