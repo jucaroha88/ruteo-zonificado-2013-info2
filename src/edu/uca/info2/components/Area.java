@@ -2,10 +2,8 @@ package edu.uca.info2.components;
 
 import aimax.osm.data.BoundingBox;
 import aimax.osm.data.Position;
-import aimax.osm.data.entities.MapEntity;
 import aimax.osm.data.entities.MapNode;
 import aimax.osm.data.entities.MapWay;
-import aimax.osm.data.impl.DefaultEntityFinder;
 import edu.uca.info2.map.ZAMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,7 +70,7 @@ public class Area {
 			for (MapNode nodo : mapway.getNodes()) {
 				if (new Position(nodo).getDistKM(centernode) < radius) {
 					this.nodos.add(nodo);
-				}
+				}	
 			}
 		}
 	}
