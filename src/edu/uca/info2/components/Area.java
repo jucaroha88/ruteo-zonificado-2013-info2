@@ -26,6 +26,16 @@ public class Area {
         setRadius(1);
     }
 
+    public void setCosto(float costo) {
+        this.costo = costo;
+    }
+
+    public float getCosto() {
+        return costo;
+    }
+
+    
+    
     public long getCenterNodeId() {
         return centerNodeId;
     }
@@ -112,7 +122,7 @@ public class Area {
 
     public Compound toPlCompoundTerm() {
         return new Compound("zona", new Term[]{new Atom(Long.toString(centerNodeId)),
-                    new Atom(Float.toString(costo)),
+                    new Atom(Integer.toString((int)Math.ceil(costo))),
                     new Atom(Integer.toString(zone.getRestriction().getStartTime())),
                     new Atom(Integer.toString(zone.getRestriction().getEndTime()))});
     }

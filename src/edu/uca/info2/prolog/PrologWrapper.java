@@ -49,7 +49,8 @@ public class PrologWrapper {
      * Realiza la consulta a la base de conocimientos, utilizando
      * sus listas de vehiculos y areas, y colocando los resultados 
      * en su lista de asignaciones. Se pueden obtener los resultados
-     * con getAsignaciones()
+     * con getAsignaciones().
+     * NOTA: las areas sin zona, restricciones, o costo, seran ignoradas
      * 
      */
     public void consultar(){
@@ -63,27 +64,34 @@ public class PrologWrapper {
                 continue;
             if(area.getZone().getRestriction() == null)
                 continue;
+            if(area.getCosto() == 0)
+                continue;
             termlist_areas.add(area.toPlCompoundTerm());
                 
         }
         pl_areas_list = Util.termArrayToList(termlist_areas.toArray(new Term[termlist_areas.size()]));
+
         //armar lista de vehiculos
         for(Vehicle vehiculo : vehiculos){
-            termlist_vehiculos.add(vehiculo.toPlCompoundTerm());
+            Term t=vehiculo.toPlCompoundTerm();
+            termlist_vehiculos.add(t);
+            //System.out.println(t);
         }
+
         pl_vehiculos_list = Util.termArrayToList(termlist_vehiculos.toArray(new Term[termlist_vehiculos.size()]));
+        
+        System.out.println(Util.listToLength(pl_vehiculos_list));
+        System.out.println(pl_vehiculos_list.toString());
+        System.out.println(pl_areas_list.toString());
         //consulta
         Variable pl_variable_asignaciones = new Variable("Asignaciones");
         Query query = new Query("recorridosValidos", new Term[]{pl_variable_asignaciones, pl_vehiculos_list, pl_areas_list});
+        System.out.println(query);
         //extraer resultados
-        Hashtable<Variable,Term> solution = query.oneSolution();
-        System.out.println(solution.get(pl_variable_asignaciones));
-        /*
-        Term[] termarray_asignaciones = Util.listToTermArray(solution.get(pl_variable_asignaciones));
-        for(Term term : termarray_asignaciones){
-            
-        }
-        */
+//        Hashtable<Variable,Term> solution = query.oneSolution();
+//        System.out.println(solution.get(pl_variable_asignaciones));
+        
+
     }
 
     public Collection<AsignacionVehiculoAreaHora> getAsignaciones() {
@@ -106,7 +114,9 @@ public class PrologWrapper {
         ArrayList<Vehicle> vehiculos = Vehicle.loadListFromJson(FileUtils.getContent("vehicles.json"));
         ZAMapViewFrame frame = new ZAMapViewFrame();
         ZAMap map = (ZAMap)frame.getView().getMap();
-        //map.loadElementsFromJson();
+        for(Area a : map.getAreas()){
+            a.setCosto(10);
+        }
         PrologWrapper prologuito = new PrologWrapper(map.getAreas(),vehiculos);
         prologuito.consultar();
     }
