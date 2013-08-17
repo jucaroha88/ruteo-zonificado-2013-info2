@@ -11,14 +11,27 @@ import edu.uca.info2.components.Area;
 import edu.uca.info2.components.Zone;
 import edu.uca.info2.map.ZAMap;
 import edu.uca.info2.util.CartUtils;
+import edu.uca.info2.util.MapNodeUtils;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.util.HashMap;
 
 /**
  *
  * @author Toshiba
  */
 public class ZAEntityRenderer extends DefaultEntityRenderer {
+    private HashMap<MapNode, Area> nodosDemarcados;
+    
+    public ZAEntityRenderer(){
+        super();
+        nodosDemarcados=new HashMap<MapNode,Area>(); 
+    }
+    
+    public void addNodoDemarcado(MapNode nodo, Area area){
+        nodosDemarcados.put(nodo,area);
+    }
+    
     @Override
     public void printBufferedObjects(){
         super.printBufferedObjects();
@@ -51,7 +64,9 @@ public class ZAEntityRenderer extends DefaultEntityRenderer {
                         transformer.x(zone.getLon1()),
                         transformer.y(zone.getLat1()));
         }
-        
+        /*
+         * dibujar areas
+         */
         for(Area area : map.getAreas()){
             //dibujar circulo del area
             g2.setColor(Color.BLUE);
@@ -68,9 +83,59 @@ public class ZAEntityRenderer extends DefaultEntityRenderer {
                 drawCirculito(transformer.x(pos.getLon()), transformer.y(pos.getLat()));
             }
         }
-        if( map.getSelectedNode() != null ){
-            g2.setColor(Color.CYAN);
-            Position pos = new Position(map.getSelectedNode());
+        /*
+         * dibujar nodos demarcados
+         */
+        for(MapNode nodo : nodosDemarcados.keySet()){
+            drawNodoYVecinos(nodo,nodosDemarcados.get(nodo),null,null);
+        }
+        /*
+         * dibujar nodo seleccionado
+         */
+         if( map.getSelectedNode() != null ){
+            drawNodoYVecinos(map.getSelectedNode(),null,Color.black,Color.GREEN);
+         }
+    }
+    
+    /*
+     * dibuja al nodo y sus vecinos que correspondan al area especificada, segun {@link edu.uca.info2.util}.
+     * @param area el area dentro de la que se buscan los vecinos del nodo. Si es null se usa cualquier
+     * area que le contenga al nodo
+     * 
+     * @param colorDelNodo si es null se usa {@link Color.CYAN}
+     * @param colorDeVecinos si es null se usa {@link Color.YELLOW}
+     * 
+     */
+    private void drawNodoYVecinos(MapNode nodo, Area area, Color colorDelNodo, Color colorDeVecinos){
+        ZAMap map = (ZAMap) wnProvider;
+        Color ncolor=colorDelNodo;
+        Color vcolor=colorDeVecinos;
+        //colores por default
+        if(ncolor==null)
+            ncolor=Color.CYAN;
+        if(vcolor==null)
+            vcolor=Color.YELLOW;
+        //dibujamos el nodo protagonista
+        g2.setColor(ncolor);
+        Position pos = new Position(nodo);
+        drawCirculito( transformer.x(pos.getLon()) , transformer.y(pos.getLat()));
+        //establecemos el area
+        Area ar=area;
+        if(ar == null){
+            for(Area a : map.getAreas()){
+                if(a.isNodeInArea(nodo)){
+                    ar=a;
+                    break;
+                }
+            }
+            if(ar == null){
+                return;
+            }
+        }
+        //dibujamos los vecinos
+        g2.setColor(vcolor);
+        for(MapNode vecino : MapNodeUtils.neighborsForNode(nodo, ar)){
+            pos = new Position(vecino);
             drawCirculito( transformer.x(pos.getLon()) , transformer.y(pos.getLat()));
         }
     }
