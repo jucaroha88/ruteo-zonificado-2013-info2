@@ -21,16 +21,7 @@ import java.util.HashMap;
  * @author Toshiba
  */
 public class ZAEntityRenderer extends DefaultEntityRenderer {
-    private HashMap<MapNode, Area> nodosDemarcados;
-    
-    public ZAEntityRenderer(){
-        super();
-        nodosDemarcados=new HashMap<MapNode,Area>(); 
-    }
-    
-    public void addNodoDemarcado(MapNode nodo, Area area){
-        nodosDemarcados.put(nodo,area);
-    }
+
     
     @Override
     public void printBufferedObjects(){
@@ -86,8 +77,8 @@ public class ZAEntityRenderer extends DefaultEntityRenderer {
         /*
          * dibujar nodos demarcados
          */
-        for(MapNode nodo : nodosDemarcados.keySet()){
-            drawNodoYVecinos(nodo,nodosDemarcados.get(nodo),null,null);
+        for(MapNode nodo : map.getNodosDemarcados().keySet()){
+            drawNodoYVecinos(nodo,map.getNodosDemarcados().get(nodo),null,null);
         }
         /*
          * dibujar nodo seleccionado

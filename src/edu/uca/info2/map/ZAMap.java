@@ -13,6 +13,7 @@ import edu.uca.info2.components.Zone;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Hashtable;
 
 /**
@@ -22,13 +23,23 @@ import java.util.Hashtable;
 public class ZAMap extends DefaultMap {
     
     private MapNode selectedNode;
+    private HashMap<MapNode, Area> nodosDemarcados;
 
     private Hashtable<String, Zone> zones;
     private Hashtable<Long, Area> areas;
+    
+    public void addNodoDemarcado(MapNode nodo, Area area){
+        nodosDemarcados.put(nodo, area);
+    }
+    
+    public HashMap<MapNode,Area> getNodosDemarcados(){
+        return nodosDemarcados;
+    }
 
     public ZAMap() {
         this.zones = new Hashtable<String, Zone>();
         this.areas = new Hashtable<Long, Area>();
+        this.nodosDemarcados = new HashMap<MapNode,Area>();
     }
 
     public void addZone(Zone zone) {
