@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.uca.info2.components.Area;
+import edu.uca.info2.components.Segment;
 import aimax.osm.data.MapWayAttFilter;
 import aimax.osm.data.MapWayFilter;
 import aimax.osm.data.entities.MapNode;
@@ -12,7 +13,8 @@ import aimax.osm.data.entities.WayRef;
 
 public class MapNodeUtils {
 
-	private static boolean ignoreOneWays;
+	// por default respetamos el sentido de las calles
+	private static boolean ignoreOneWays = false;
 
 	public static boolean isIgnoreOneWays() {
 		return ignoreOneWays;
@@ -66,6 +68,22 @@ public class MapNodeUtils {
 		}
 
 		return neighbors;
+	}
+
+	public List<Segment> segmentsInArea(Area area) {
+		List<Segment> segments = new ArrayList<Segment>();
+
+		for (MapNode from : area.getNodos()) {
+			for (MapNode to : MapNodeUtils.neighborsForNode(from, area)) {
+				Segment s = new Segment(from, to);
+				
+				if (!segments.contains(s)) {
+					segments.add(s);
+				}
+			}
+		}
+
+		return segments;
 	}
 
 }
