@@ -32,8 +32,8 @@ public class Vehicle {
         
         public Compound toPlCompoundTerm(){
             return new Compound("auto", new Term[]{new Atom(vehicleId),
-                                                    new Atom(Integer.toString(autonomy)),
-                                                    new Atom(Integer.toString(velocidad))});
+                                                    new jpl.Integer(autonomy),
+                                                    new jpl.Integer(velocidad)});
         }
          
         public static ArrayList<Vehicle> loadListFromJson(String jsonstr){

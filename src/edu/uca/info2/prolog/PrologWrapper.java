@@ -64,8 +64,8 @@ public class PrologWrapper {
                 continue;
             if(area.getZone().getRestriction() == null)
                 continue;
-            if(area.getCosto() == 0)
-                continue;
+//            if(area.getCosto() == 0)
+//                continue;
             termlist_areas.add(area.toPlCompoundTerm());
                 
         }
@@ -80,16 +80,16 @@ public class PrologWrapper {
 
         pl_vehiculos_list = Util.termArrayToList(termlist_vehiculos.toArray(new Term[termlist_vehiculos.size()]));
         
-        System.out.println(Util.listToLength(pl_vehiculos_list));
-        System.out.println(pl_vehiculos_list.toString());
-        System.out.println(pl_areas_list.toString());
+//        System.out.println(Util.listToLength(pl_vehiculos_list));
+//        System.out.println(pl_vehiculos_list.toString());
+//        System.out.println(pl_areas_list.toString());
         //consulta
         Variable pl_variable_asignaciones = new Variable("Asignaciones");
         Query query = new Query("recorridosValidos", new Term[]{pl_variable_asignaciones, pl_vehiculos_list, pl_areas_list});
-        System.out.println(query);
+//        System.out.println(query);
         //extraer resultados
-//        Hashtable<Variable,Term> solution = query.oneSolution();
-//        System.out.println(solution.get(pl_variable_asignaciones));
+        Hashtable<Variable,Term> solution = query.oneSolution();
+        System.out.println(solution.get(pl_variable_asignaciones));
         
 
     }
@@ -114,9 +114,9 @@ public class PrologWrapper {
         ArrayList<Vehicle> vehiculos = Vehicle.loadListFromJson(FileUtils.getContent("vehicles.json"));
         ZAMapViewFrame frame = new ZAMapViewFrame();
         ZAMap map = (ZAMap)frame.getView().getMap();
-        for(Area a : map.getAreas()){
-            a.setCosto(10);
-        }
+//        for(Area a : map.getAreas()){
+//            a.setCosto(10);
+//        }
         PrologWrapper prologuito = new PrologWrapper(map.getAreas(),vehiculos);
         prologuito.consultar();
     }
