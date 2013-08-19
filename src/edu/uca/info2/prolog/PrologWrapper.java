@@ -36,14 +36,13 @@ public class PrologWrapper {
     private Collection<AsignacionVehiculoAreaHora> asignaciones;
     private Collection<Vehicle> vehiculos;
     private Collection<Area> areas;
-
-    public PrologWrapper() throws PrologWrapperException{
-        this(new ArrayList<Area>(),new ArrayList<Vehicle>());
-    }
     
-    public PrologWrapper(Collection<Area> areas, Collection<Vehicle> vehiculos) throws PrologWrapperException{
-        this.areas=areas;
-        this.vehiculos=vehiculos;
+    private ZAMap map;
+    
+    public PrologWrapper(ZAMap map) throws PrologWrapperException{
+        this.map=map;
+        this.areas=map.getAreas();
+        this.vehiculos=map.getVehicles();
         this.asignaciones=new ArrayList<AsignacionVehiculoAreaHora>(); 
         //consultamos la base de conocimientos
         Query kbconsultquery = new Query( "consult", new Term[]{new Atom(knowledgeBaseFile)} );
@@ -71,8 +70,6 @@ public class PrologWrapper {
                 continue;
             if(area.getZone().getRestriction() == null)
                 continue;
-//            if(area.getCosto() == 0)
-//                continue;
             termlist_areas.add(area.toPlCompoundTerm());
                 
         }
@@ -82,14 +79,10 @@ public class PrologWrapper {
         for(Vehicle vehiculo : vehiculos){
             Term t=vehiculo.toPlCompoundTerm();
             termlist_vehiculos.add(t);
-            //System.out.println(t);
         }
 
         pl_vehiculos_list = Util.termArrayToList(termlist_vehiculos.toArray(new Term[termlist_vehiculos.size()]));
-        
-//        System.out.println(Util.listToLength(pl_vehiculos_list));
-//        System.out.println(pl_vehiculos_list.toString());
-//        System.out.println(pl_areas_list.toString());
+
         //consulta
         String variableName = "Asignaciones";
         Variable pl_variable_asignaciones = new Variable(variableName);
@@ -97,19 +90,14 @@ public class PrologWrapper {
 
         
         //extraer resultados
-        System.out.println(query);
+        this.asignaciones=new ArrayList<AsignacionVehiculoAreaHora>();
         Hashtable<String,Term> solution = query.oneSolution();
         if(solution != null){
-            System.out.println("se encontraron soluciones");
-            System.out.println(solution.get(variableName));
             Term[] termlist_asignaciones = Util.listToTermArray( solution.get(variableName));
             for(Term t : termlist_asignaciones){
-                System.out.println((new AsignacionVehiculoAreaHora(t)).vehiculo);
+                asignaciones.add(new AsignacionVehiculoAreaHora(t, this.map));
             }
-        }else{
-            System.out.println("no se encontraron soluciones");
-        }
-//        
+        }      
         
     }
 
@@ -130,14 +118,14 @@ public class PrologWrapper {
      * main solo para pruebas
      */
     public static void main(String[] args) throws FileNotFoundException,IOException, PrologWrapperException{
-        ArrayList<Vehicle> vehiculos = Vehicle.loadListFromJson(FileUtils.getContent("vehicles.json"));
         ZAMapViewFrame frame = new ZAMapViewFrame();
         ZAMap map = (ZAMap)frame.getView().getMap();
-//        for(Area a : map.getAreas()){
-//            a.setCosto(10);
-//        }
-        PrologWrapper prologuito = new PrologWrapper(map.getAreas(),vehiculos);
+        PrologWrapper prologuito = new PrologWrapper(map);
         prologuito.consultar();
+        
+        for(AsignacionVehiculoAreaHora a : prologuito.getAsignaciones()){
+            System.out.println(a);
+        }
     }
     
 }

@@ -12,6 +12,7 @@ import aimax.osm.viewer.MapStyleFactory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import edu.uca.info2.components.Area;
+import edu.uca.info2.components.Vehicle;
 import edu.uca.info2.components.Zone;
 import edu.uca.info2.components.ZoneRestriction;
 import edu.uca.info2.util.FileUtils;
@@ -35,10 +36,12 @@ public class ZAMap extends DefaultMap {
 
     private Hashtable<String, Zone> zones;
     private Hashtable<Long, Area> areas;
+    private Hashtable<String, Vehicle> vehicles;
 
     public ZAMap() {
         this.zones = new Hashtable<String, Zone>();
         this.areas = new Hashtable<Long, Area>();
+        this.vehicles = new Hashtable<String,Vehicle>();
         readMap(new File(MAP_FILE_NAME));
         try{
             loadElementsFromJson();
@@ -63,6 +66,18 @@ public class ZAMap extends DefaultMap {
         return areas.values();
     }
     
+    public Area getArea(Long centerNodeId){
+        return areas.get(centerNodeId);
+    }
+
+    public Collection<Vehicle> getVehicles() {
+        return vehicles.values();
+    }
+    
+    public Vehicle getVehicle(String vehicleId){
+        return vehicles.get(vehicleId);
+    }
+    
     public MapNode getSelectedNode() {
         return selectedNode;
     }
@@ -82,6 +97,7 @@ public class ZAMap extends DefaultMap {
         loadZonesFromJson(FileUtils.getContent("zones.json"));
         loadZoneRestrictionsFromJson(FileUtils.getContent("restrictions.json"));
         loadAreasFromJson(FileUtils.getContent("areas.json"));
+        loadVehiclesFromJson(FileUtils.getContent("vehicles.json"));
     }
 
     protected void loadZonesFromJson(String jsonstr) {
@@ -115,6 +131,16 @@ public class ZAMap extends DefaultMap {
             addArea(area);
             area.findNodes();
             area.findZone();
+        }
+    }
+    
+    protected void loadVehiclesFromJson(String jsonstr){
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<ArrayList<Vehicle>>() {
+        }.getType();
+        ArrayList<Vehicle> vehiculos = gson.fromJson(jsonstr, collectionType);
+        for(Vehicle vehicle : vehiculos){
+            this.vehicles.put(vehicle.getVehicleId(), vehicle);
         }
     }
 }

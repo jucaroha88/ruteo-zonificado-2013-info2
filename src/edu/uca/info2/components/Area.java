@@ -125,7 +125,7 @@ public class Area {
     }
 
     public Compound toPlCompoundTerm() {
-        return new Compound("zona", new Term[]{new Atom(Long.toString(centerNodeId)),
+        return new Compound("zona", new Term[]{new jpl.Integer(centerNodeId),
                     new jpl.Float(costo),
                     new jpl.Integer(zone.getRestriction().getStartTime()), //new Atom(Integer.toString(zone.getRestriction().getStartTime())),
                     new jpl.Integer(zone.getRestriction().getEndTime())}); //new Atom(Integer.toString(zone.getRestriction().getEndTime()))});
