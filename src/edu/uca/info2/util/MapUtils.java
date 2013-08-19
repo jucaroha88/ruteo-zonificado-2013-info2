@@ -11,17 +11,17 @@ import aimax.osm.data.entities.MapNode;
 import aimax.osm.data.entities.MapWay;
 import aimax.osm.data.entities.WayRef;
 
-public class MapNodeUtils {
+public class MapUtils {
 
 	// por default respetamos el sentido de las calles
-	private static boolean ignoreOneWays = false;
+	private static boolean ignoreOneways = false;
 
 	public static boolean isIgnoreOneWays() {
-		return ignoreOneWays;
+		return ignoreOneways;
 	}
 
-	public static void setIgnoreOneWays(boolean ignoreOneWays) {
-		MapNodeUtils.ignoreOneWays = ignoreOneWays;
+	public static void setIgnoreOneWays(boolean ignoreOneways) {
+		MapUtils.ignoreOneways = ignoreOneways;
 	}
 
 	public static List<MapNode> neighborsForNode(MapNode node, Area area) {
@@ -49,7 +49,7 @@ public class MapNodeUtils {
 						break;
 					}
 				}
-				if (!way.isOneway() || ignoreOneWays) {
+				if (!way.isOneway() || ignoreOneways) {
 					for (int idx = nodeIdx - 1; idx >= 0; idx--) {
 						to = wayNodes.get(idx);
 
@@ -74,7 +74,7 @@ public class MapNodeUtils {
 		List<Segment> segments = new ArrayList<Segment>();
 
 		for (MapNode from : area.getNodos()) {
-			for (MapNode to : MapNodeUtils.neighborsForNode(from, area)) {
+			for (MapNode to : MapUtils.neighborsForNode(from, area)) {
 				Segment s = new Segment(from, to);
 				
 				if (!segments.contains(s)) {

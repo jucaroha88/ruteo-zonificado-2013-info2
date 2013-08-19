@@ -11,7 +11,7 @@ import edu.uca.info2.components.Area;
 import edu.uca.info2.components.Zone;
 import edu.uca.info2.map.ZAMap;
 import edu.uca.info2.util.CartUtils;
-import edu.uca.info2.util.MapNodeUtils;
+import edu.uca.info2.util.MapUtils;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.util.HashMap;
@@ -125,7 +125,7 @@ public class ZAEntityRenderer extends DefaultEntityRenderer {
         }
         //dibujamos los vecinos
         g2.setColor(vcolor);
-        for(MapNode vecino : MapNodeUtils.neighborsForNode(nodo, ar)){
+        for(MapNode vecino : MapUtils.neighborsForNode(nodo, ar)){
             pos = new Position(vecino);
             drawCirculito( transformer.x(pos.getLon()) , transformer.y(pos.getLat()));
         }
