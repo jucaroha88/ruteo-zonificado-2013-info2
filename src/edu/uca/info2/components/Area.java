@@ -58,6 +58,10 @@ public class Area {
 		return nodos;
 	}
 
+	public ZAMap getMap() {
+		return map;
+	}
+
 	public void setMap(ZAMap map) {
 		this.map = map;
 	}

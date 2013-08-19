@@ -70,7 +70,7 @@ public class MapUtils {
 		return neighbors;
 	}
 
-	public List<Segment> segmentsInArea(Area area) {
+	public static List<Segment> segmentsInArea(Area area) {
 		List<Segment> segments = new ArrayList<Segment>();
 
 		for (MapNode from : area.getNodos()) {
