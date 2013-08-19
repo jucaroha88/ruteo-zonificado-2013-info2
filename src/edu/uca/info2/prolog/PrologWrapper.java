@@ -86,12 +86,11 @@ public class PrologWrapper {
         //consulta
         Variable pl_variable_asignaciones = new Variable("Asignaciones");
         Query query = new Query("recorridosValidos", new Term[]{pl_variable_asignaciones, pl_vehiculos_list, pl_areas_list});
-//        System.out.println(query);
+        System.out.println(query);
         //extraer resultados
         Hashtable<Variable,Term> solution = query.oneSolution();
-        System.out.println(solution.get(pl_variable_asignaciones));
+        //System.out.println(solution.get(pl_variable_asignaciones));
         
-
     }
 
     public Collection<AsignacionVehiculoAreaHora> getAsignaciones() {
