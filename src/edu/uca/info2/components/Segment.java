@@ -1,7 +1,6 @@
 package edu.uca.info2.components;
 
 import aimax.osm.data.entities.MapNode;
-import aimax.osm.data.impl.DefaultMapNode;
 
 public class Segment {
 
@@ -46,17 +45,9 @@ public class Segment {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+
 		Segment other = (Segment) obj;
-		// if (from == null) {
-		// if (other.from != null)
-		// return false;
-		// } else if (!from.equals(other.from))
-		// return false;
-		// if (to == null) {
-		// if (other.to != null)
-		// return false;
-		// } else if (!to.equals(other.to))
-		// return false;
+
 		if (from.getLat() == other.from.getLat()
 				&& from.getLon() == other.from.getLon()
 				&& to.getLat() == other.to.getLat()
