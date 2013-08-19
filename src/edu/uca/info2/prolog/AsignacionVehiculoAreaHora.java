@@ -17,8 +17,8 @@ public class AsignacionVehiculoAreaHora {
     Area area;
     int hora;
     
-    public AsignacionVehiculoAreaHora(Term term){
-        
+    public AsignacionVehiculoAreaHora(Term term) throws PrologWrapperException{
+        vehiculo = new Vehicle(term.arg(1));
     }
     
     public AsignacionVehiculoAreaHora(Vehicle vehiculo, Area area, int hora) {
@@ -26,5 +26,4 @@ public class AsignacionVehiculoAreaHora {
         this.area = area;
         this.hora = hora;
     }
-    
 }

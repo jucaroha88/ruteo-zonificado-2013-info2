@@ -31,18 +31,25 @@ import jpl.Variable;
  * @author Toshiba
  */
 public class PrologWrapper {
+    public static final String knowledgeBaseFile = "autos_zonas_horas.pl";
+    
     private Collection<AsignacionVehiculoAreaHora> asignaciones;
     private Collection<Vehicle> vehiculos;
     private Collection<Area> areas;
 
-    public PrologWrapper() {
+    public PrologWrapper() throws PrologWrapperException{
         this(new ArrayList<Area>(),new ArrayList<Vehicle>());
     }
     
-    public PrologWrapper(Collection<Area> areas, Collection<Vehicle> vehiculos){
+    public PrologWrapper(Collection<Area> areas, Collection<Vehicle> vehiculos) throws PrologWrapperException{
         this.areas=areas;
         this.vehiculos=vehiculos;
         this.asignaciones=new ArrayList<AsignacionVehiculoAreaHora>(); 
+        //consultamos la base de conocimientos
+        Query kbconsultquery = new Query( "consult", new Term[]{new Atom(knowledgeBaseFile)} );
+        if(!kbconsultquery.query()){
+            throw new PrologWrapperException("No se pudo consultar la base de conocimientos "+knowledgeBaseFile);
+        }
     }
     
     /*
@@ -53,7 +60,7 @@ public class PrologWrapper {
      * NOTA: las areas sin zona, restricciones, o costo, seran ignoradas
      * 
      */
-    public void consultar(){
+    public void consultar() throws PrologWrapperException{
         ArrayList<Term> termlist_areas = new ArrayList<Term>();
         ArrayList<Term> termlist_vehiculos = new ArrayList<Term>();
         Term pl_areas_list;
@@ -84,12 +91,25 @@ public class PrologWrapper {
 //        System.out.println(pl_vehiculos_list.toString());
 //        System.out.println(pl_areas_list.toString());
         //consulta
-        Variable pl_variable_asignaciones = new Variable("Asignaciones");
+        String variableName = "Asignaciones";
+        Variable pl_variable_asignaciones = new Variable(variableName);
         Query query = new Query("recorridosValidos", new Term[]{pl_variable_asignaciones, pl_vehiculos_list, pl_areas_list});
-        System.out.println(query);
+
+        
         //extraer resultados
-        Hashtable<Variable,Term> solution = query.oneSolution();
-        //System.out.println(solution.get(pl_variable_asignaciones));
+        System.out.println(query);
+        Hashtable<String,Term> solution = query.oneSolution();
+        if(solution != null){
+            System.out.println("se encontraron soluciones");
+            System.out.println(solution.get(variableName));
+            Term[] termlist_asignaciones = Util.listToTermArray( solution.get(variableName));
+            for(Term t : termlist_asignaciones){
+                System.out.println((new AsignacionVehiculoAreaHora(t)).vehiculo);
+            }
+        }else{
+            System.out.println("no se encontraron soluciones");
+        }
+//        
         
     }
 
@@ -109,7 +129,7 @@ public class PrologWrapper {
     /*
      * main solo para pruebas
      */
-    public static void main(String[] args) throws FileNotFoundException,IOException{
+    public static void main(String[] args) throws FileNotFoundException,IOException, PrologWrapperException{
         ArrayList<Vehicle> vehiculos = Vehicle.loadListFromJson(FileUtils.getContent("vehicles.json"));
         ZAMapViewFrame frame = new ZAMapViewFrame();
         ZAMap map = (ZAMap)frame.getView().getMap();
@@ -119,4 +139,5 @@ public class PrologWrapper {
         PrologWrapper prologuito = new PrologWrapper(map.getAreas(),vehiculos);
         prologuito.consultar();
     }
+    
 }

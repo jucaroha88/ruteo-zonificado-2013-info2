@@ -2,6 +2,7 @@ package edu.uca.info2.components;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import edu.uca.info2.prolog.PrologWrapperException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import jpl.Atom;
@@ -10,11 +11,21 @@ import jpl.Term;
 
 public class Vehicle {
     
+        public static final String pl_compound_name = "auto";
+    
         public static final int velocidad=20;
 	
 	private String vehicleId;
 	private int autonomy;
 	
+//        public Vehicle(Term term) throws PrologWrapperException{
+//            if(!term.name().equals(pl_compound_name)){
+//                throw new PrologWrapperException("esto no es un compound 'auto'");
+//            }
+//            vehicleId = term.arg(1).name();
+//            autonomy = term.arg(2).intValue();
+//            
+//        }
 	
 	public String getVehicleId() {
 		return vehicleId;
@@ -42,5 +53,9 @@ public class Vehicle {
             }.getType();
             ArrayList<Vehicle> vehicles = gson.fromJson(jsonstr,collectionType);
             return vehicles;
+        }
+        
+        public String toString(){
+            return "vehicle("+vehicleId+","+autonomy+","+velocidad+")";
         }
 }

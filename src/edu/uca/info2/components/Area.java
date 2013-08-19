@@ -5,6 +5,7 @@ import aimax.osm.data.Position;
 import aimax.osm.data.entities.MapNode;
 import aimax.osm.data.entities.MapWay;
 import edu.uca.info2.map.ZAMap;
+import edu.uca.info2.prolog.PrologWrapperException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -13,6 +14,8 @@ import jpl.Compound;
 import jpl.Term;
 
 public class Area {
+    
+    public static final String pl_compound_name = "zona";
 
     private float costo; //costo de recorrer el area en km 
     private Zone zone;
@@ -21,6 +24,7 @@ public class Area {
     private int radius;
     private List<MapNode> nodos;
 
+    
     public Area(long centerNodeId) {
         setCenterNodeId(centerNodeId);
         setRadius(1);
