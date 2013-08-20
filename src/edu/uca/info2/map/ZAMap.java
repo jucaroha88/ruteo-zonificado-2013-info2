@@ -4,12 +4,21 @@
  */
 package edu.uca.info2.map;
 
+import aimax.osm.data.MapBuilder;
 import aimax.osm.data.entities.MapNode;
 import aimax.osm.data.impl.DefaultMap;
+import aimax.osm.reader.Bz2OsmReader;
+import aimax.osm.viewer.MapStyleFactory;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import edu.uca.info2.components.Area;
+import edu.uca.info2.components.Vehicle;
 import edu.uca.info2.components.Zone;
+import edu.uca.info2.components.ZoneRestriction;
+import edu.uca.info2.util.FileUtils;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,12 +31,14 @@ import java.util.Hashtable;
  */
 public class ZAMap extends DefaultMap {
     
+    private static final String MAP_FILE_NAME = "asu.osm";
+    
     private MapNode selectedNode;
     private HashMap<MapNode, Area> nodosDemarcados;
 
     private Hashtable<String, Zone> zones;
     private Hashtable<Long, Area> areas;
-    
+    private Hashtable<String, Vehicle> vehicles;
     public void addNodoDemarcado(MapNode nodo, Area area){
         nodosDemarcados.put(nodo, area);
     }
@@ -40,6 +51,13 @@ public class ZAMap extends DefaultMap {
         this.zones = new Hashtable<String, Zone>();
         this.areas = new Hashtable<Long, Area>();
         this.nodosDemarcados = new HashMap<MapNode,Area>();
+		this.vehicles = new Hashtable<String,Vehicle>();
+        readMap(new File(MAP_FILE_NAME));
+        try{
+            loadElementsFromJson();
+        }catch(IOException e){
+            System.err.println("problemas al cargar los elementos del json");
+        }
     }
 
     public void addZone(Zone zone) {
@@ -58,6 +76,18 @@ public class ZAMap extends DefaultMap {
         return areas.values();
     }
     
+    public Area getArea(Long centerNodeId){
+        return areas.get(centerNodeId);
+    }
+
+    public Collection<Vehicle> getVehicles() {
+        return vehicles.values();
+    }
+    
+    public Vehicle getVehicle(String vehicleId){
+        return vehicles.get(vehicleId);
+    }
+    
     public MapNode getSelectedNode() {
         return selectedNode;
     }
@@ -66,8 +96,21 @@ public class ZAMap extends DefaultMap {
         this.selectedNode = selectedNode;
     }
     
+    protected void readMap(File file) {
+            MapBuilder builder = getBuilder();
+            builder.setEntityClassifier(new MapStyleFactory().createDefaultClassifier());
+            (new Bz2OsmReader()).readMap(file, builder);
+            builder.buildMap();
+    }
+    
+    protected void loadElementsFromJson() throws FileNotFoundException, IOException {
+        loadZonesFromJson(FileUtils.getContent("zones.json"));
+        loadZoneRestrictionsFromJson(FileUtils.getContent("restrictions.json"));
+        loadAreasFromJson(FileUtils.getContent("areas.json"));
+        loadVehiclesFromJson(FileUtils.getContent("vehicles.json"));
+    }
 
-    public void loadZonesFromJson(String jsonstr) {
+    protected void loadZonesFromJson(String jsonstr) {
         Gson gson = new Gson();
         Type collectionType = new TypeToken<ArrayList<Zone>>() {
         }.getType();
@@ -77,8 +120,18 @@ public class ZAMap extends DefaultMap {
             addZone(zone);
         }
     }
+    
+    protected void loadZoneRestrictionsFromJson(String jsonstr){
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<ArrayList<ZoneRestriction>>() {
+        }.getType();
+        ArrayList<ZoneRestriction> zonerestrictions = gson.fromJson(jsonstr,collectionType);
+        for(ZoneRestriction zonerestriction : zonerestrictions){
+            zones.get(zonerestriction.getZoneId()).setRestriction(zonerestriction);
+        }
+    }
 
-    public void loadAreasFromJson(String jsonstr) {
+    protected void loadAreasFromJson(String jsonstr) {
         Gson gson = new Gson();
         Type collectionType = new TypeToken<ArrayList<Area>>() {
         }.getType();
@@ -87,6 +140,17 @@ public class ZAMap extends DefaultMap {
             area.setMap(this);
             addArea(area);
             area.findNodes();
+            area.findZone();
+        }
+    }
+    
+    protected void loadVehiclesFromJson(String jsonstr){
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<ArrayList<Vehicle>>() {
+        }.getType();
+        ArrayList<Vehicle> vehiculos = gson.fromJson(jsonstr, collectionType);
+        for(Vehicle vehicle : vehiculos){
+            this.vehicles.put(vehicle.getVehicleId(), vehicle);
         }
     }
 }

@@ -22,8 +22,17 @@ recorridosValidos(Recorridos,    	%lista de recorrido(auto, zona, hora)		(hora d
 					Zonas)			%lista de zona(id,costo, horario_inicio, horario_fin)	(hora_inicio es la primera hora consumida, hora_fin es la ultima)
 					:-
 					asignaAutos(Recorridos, Autos, Zonas),
-					asignaHoras(Recorridos).
-					
+					asignaHoras(Recorridos),
+					labelAllRecorridos(Recorridos).
+
+	
+%labelAllRecorridos(?Recorridos) fija las horas a partir del los dominios finitos de valores que tienen	
+labelAllRecorridos(Recorridos) :- labelAllRecorridos(Recorridos,[]).
+labelAllRecorridos([],VarList) :- labeling([],VarList).
+labelAllRecorridos([Recorrido|RecorridosTail], VarList) :- Recorrido = recorrido(_,_,Hora),
+													labelAllRecorridos(RecorridosTail, [Hora|VarList]).
+										
+
 
 					
 %cada zona es recorrida por un solo auto
