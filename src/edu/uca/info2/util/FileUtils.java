@@ -9,18 +9,22 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 /**
- *
+ * 
  * @author Toshiba
  */
 public class FileUtils {
-    public static String getContent(String filename) throws FileNotFoundException, IOException{
-        BufferedReader bf = new BufferedReader(new java.io.FileReader(filename));
-        String stracu = new String();
-        String line=null;
-        while( (line = bf.readLine()) != null){
-            stracu = stracu+line;
-        }
-        return stracu;
-    }
-    
+	public static String getContent(String filename)
+			throws FileNotFoundException, IOException {
+		BufferedReader bf = new BufferedReader(new java.io.FileReader(filename));
+		String stracu = new String();
+		String line = null;
+
+		while ((line = bf.readLine()) != null) {
+			stracu = stracu + line;
+		}
+
+		bf.close();
+		return stracu;
+	}
+
 }

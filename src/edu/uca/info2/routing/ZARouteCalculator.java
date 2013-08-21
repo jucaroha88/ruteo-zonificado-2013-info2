@@ -16,6 +16,7 @@ import aimax.osm.routing.RouteCalculator;
 
 public class ZARouteCalculator extends RouteCalculator {
 
+	// siempre usamos el camino en auto
 	private static final int CAR_WAY = 1;
 
 	public List<MapNode> calculateRoute(MapNode from, MapNode to, Area area) {
