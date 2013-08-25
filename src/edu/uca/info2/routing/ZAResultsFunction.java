@@ -17,11 +17,12 @@ public class ZAResultsFunction implements ResultFunction {
 			ZASearchState nextState = new ZASearchState(segment,
 					state.getSegmentsCounter());
 
-			if (nextState.getSegmentsCounter().get(segment) <= nextState
-					.getMaxSegmentPassThrough()) {
-				return nextState;
+			if (state.getSegmentsCounter().containsKey(segment)) {
+				if (nextState.getSegmentsCounter().get(segment) <= nextState
+						.getMaxSegmentPassThrough()) {
+					return nextState;
+				}
 			}
-
 		}
 
 		return s;
