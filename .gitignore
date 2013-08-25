@@ -6,3 +6,5 @@
 /bin
 .classpath
 jpl.jar
+.idea/*
+*.iml

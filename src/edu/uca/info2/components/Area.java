@@ -1,7 +1,16 @@
 package edu.uca.info2.components;
 
-import src.edu.uca.info2.map.ZAMap;
-import src.edu.uca.info2.util.MapUtils;
+import aimax.osm.data.BoundingBox;
+import aimax.osm.data.Position;
+import aimax.osm.data.entities.MapNode;
+import aimax.osm.data.entities.MapWay;
+import edu.uca.info2.map.ZAMap;
+import edu.uca.info2.util.MapUtils;
+import jpl.Compound;
+import jpl.Term;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Area {
 
