@@ -4,8 +4,10 @@
  */
 package edu.uca.info2.application;
 
+import aimax.osm.data.entities.MapNode;
 import edu.uca.info2.components.Area;
 import edu.uca.info2.map.ZAMap;
+import edu.uca.info2.routing.ZARouteCalculator;
 import edu.uca.info2.viewer.ZAMapViewFrame;
 
 import java.io.FileNotFoundException;
@@ -28,6 +30,11 @@ public class ZonasYAreas {
 		frame = new ZAMapViewFrame();
 		ZAMap map = (ZAMap) frame.getView().getMap();
 		// map.loadElementsFromJson();
+
+        ZARouteCalculator rc = new ZARouteCalculator();
+        Area a = (Area) map.getAreas().toArray()[0];
+        List<MapNode> path = rc.calculateRoute(a.getCenterNode(), null, a);
+        System.out.println(path.toString());
 	}
 
 }

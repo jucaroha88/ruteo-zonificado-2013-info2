@@ -23,10 +23,15 @@ public class Area {
 	private int radius;
 	private List<MapNode> nodos;
 
+
+    public Area(long centerNodeId, int radius) {
+        setCenterNodeId(centerNodeId);
+        setRadius(radius);
+        this.nodos = new ArrayList<MapNode>();
+    }
+
 	public Area(long centerNodeId) {
-		setCenterNodeId(centerNodeId);
-		setRadius(1);
-		this.nodos = new ArrayList<MapNode>();
+        this(centerNodeId, 1);
 	}
 
 	public void setCosto(float costo) {
