@@ -1,12 +1,14 @@
 package edu.uca.info2.components;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import aimax.osm.data.BoundingBox;
 import aimax.osm.data.Position;
 import aimax.osm.data.entities.MapNode;
 import aimax.osm.data.entities.MapWay;
 import edu.uca.info2.map.ZAMap;
-import java.util.ArrayList;
-import java.util.List;
+import edu.uca.info2.util.MapUtils;
 
 public class Area {
 
@@ -26,6 +28,10 @@ public class Area {
 
 	public long getCenterNodeId() {
 		return centerNodeId;
+	}
+
+	public MapNode getCenterNode() {
+		return map.getNode(centerNodeId);
 	}
 
 	public void setCenterNodeId(long centerNodeId) {
@@ -74,12 +80,29 @@ public class Area {
 			for (MapNode nodo : mapway.getNodes()) {
 				if (new Position(nodo).getDistKM(centernode) < radius) {
 					this.nodos.add(nodo);
-				}	
+				}
 			}
 		}
 	}
-	
+
 	public boolean isNodeInArea(MapNode node) {
 		return this.nodos.contains(node);
 	}
+
+	public List<Segment> segmentsInArea() {
+		List<Segment> segments = new ArrayList<Segment>();
+
+		for (MapNode from : this.getNodos()) {
+			for (MapNode to : MapUtils.neighborsForNode(from, this)) {
+				Segment s = new Segment(from, to);
+
+				if (!segments.contains(s)) {
+					segments.add(s);
+				}
+			}
+		}
+
+		return segments;
+	}
+
 }

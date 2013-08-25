@@ -16,6 +16,11 @@ public class Segment {
 		return from;
 	}
 
+	@Override
+	public String toString() {
+		return "Segment [from=" + from + ", to=" + to + "]";
+	}
+
 	public void setFrom(MapNode from) {
 		this.from = from;
 	}
@@ -54,7 +59,7 @@ public class Segment {
 				&& to.getLon() == other.to.getLon()) {
 			return true;
 		}
-		
+
 		return false;
 	}
 

@@ -3,13 +3,12 @@ package edu.uca.info2.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import edu.uca.info2.components.Area;
-import edu.uca.info2.components.Segment;
 import aimax.osm.data.MapWayAttFilter;
 import aimax.osm.data.MapWayFilter;
 import aimax.osm.data.entities.MapNode;
 import aimax.osm.data.entities.MapWay;
 import aimax.osm.data.entities.WayRef;
+import edu.uca.info2.components.Area;
 
 public class MapUtils {
 
@@ -70,20 +69,20 @@ public class MapUtils {
 		return neighbors;
 	}
 
-	public static List<Segment> segmentsInArea(Area area) {
-		List<Segment> segments = new ArrayList<Segment>();
-
-		for (MapNode from : area.getNodos()) {
-			for (MapNode to : MapUtils.neighborsForNode(from, area)) {
-				Segment s = new Segment(from, to);
-				
-				if (!segments.contains(s)) {
-					segments.add(s);
-				}
-			}
-		}
-
-		return segments;
-	}
+	// public static List<Segment> segmentsInArea(Area area) {
+	// List<Segment> segments = new ArrayList<Segment>();
+	//
+	// for (MapNode from : area.getNodos()) {
+	// for (MapNode to : MapUtils.neighborsForNode(from, area)) {
+	// Segment s = new Segment(from, to);
+	//
+	// if (!segments.contains(s)) {
+	// segments.add(s);
+	// }
+	// }
+	// }
+	//
+	// return segments;
+	// }
 
 }

@@ -7,7 +7,6 @@ import java.util.Map;
 import aimax.osm.data.entities.MapNode;
 import edu.uca.info2.components.Area;
 import edu.uca.info2.components.Segment;
-import edu.uca.info2.util.MapUtils;
 
 public class ZASearchState {
 	// current node
@@ -21,7 +20,8 @@ public class ZASearchState {
 
 	public ZASearchState(MapNode node, Area area) {
 		this.node = node;
-		List<Segment> segments = MapUtils.segmentsInArea(area);
+		// List<Segment> segments = MapUtils.segmentsInArea(area);
+		List<Segment> segments = area.segmentsInArea();
 
 		// inicializa el contador de segmentos
 		for (Segment segment : segments) {

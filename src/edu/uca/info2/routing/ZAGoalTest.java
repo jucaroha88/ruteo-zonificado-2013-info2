@@ -5,7 +5,7 @@ import java.util.HashMap;
 import aima.core.search.framework.GoalTest;
 import edu.uca.info2.components.Segment;
 
-public class ZAGoalState implements GoalTest {
+public class ZAGoalTest implements GoalTest {
 
 	@Override
 	public boolean isGoalState(Object state) {
