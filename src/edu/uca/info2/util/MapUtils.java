@@ -15,11 +15,7 @@ public class MapUtils {
 	// por default respetamos el sentido de las calles
 	private static boolean ignoreOneways = false;
 
-	public static boolean isIgnoreOneWays() {
-		return ignoreOneways;
-	}
-
-	public static void setIgnoreOneWays(boolean ignoreOneways) {
+	public static void setIgnoreOneways(boolean ignoreOneways) {
 		MapUtils.ignoreOneways = ignoreOneways;
 	}
 
@@ -68,21 +64,5 @@ public class MapUtils {
 
 		return neighbors;
 	}
-
-	// public static List<Segment> segmentsInArea(Area area) {
-	// List<Segment> segments = new ArrayList<Segment>();
-	//
-	// for (MapNode from : area.getNodos()) {
-	// for (MapNode to : MapUtils.neighborsForNode(from, area)) {
-	// Segment s = new Segment(from, to);
-	//
-	// if (!segments.contains(s)) {
-	// segments.add(s);
-	// }
-	// }
-	// }
-	//
-	// return segments;
-	// }
 
 }
