@@ -39,6 +39,7 @@ public class ZAMap extends DefaultMap {
     private Hashtable<String, Zone> zones;
     private Hashtable<Long, Area> areas;
     private Hashtable<String, Vehicle> vehicles;
+
     public void addNodoDemarcado(MapNode nodo, Area area){
         nodosDemarcados.put(nodo, area);
     }

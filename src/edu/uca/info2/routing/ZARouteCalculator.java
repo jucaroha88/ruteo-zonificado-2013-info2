@@ -19,7 +19,7 @@ public class ZARouteCalculator extends RouteCalculator {
 	// siempre usamos el camino en auto
 	private static final int CAR_WAY = 1;
 
-	public List<MapNode> calculateRoute(MapNode from, MapNode to, Area area) {
+	public List<MapNode> calculateRoute(MapNode from, Area area) {
 		List<MapNode> result = new ArrayList<MapNode>();
 		MapWayFilter wayFilter = super.createMapWayFilter(area.getMap(),
 				CAR_WAY);
@@ -44,5 +44,10 @@ public class ZARouteCalculator extends RouteCalculator {
 
 		return result;
 	}
+
+    public static void main(String[] args) {
+        ZARouteCalculator rc = new ZARouteCalculator();
+        //rc.calculateRoute();
+    }
 
 }

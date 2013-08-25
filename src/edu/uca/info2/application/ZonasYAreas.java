@@ -31,10 +31,10 @@ public class ZonasYAreas {
 		ZAMap map = (ZAMap) frame.getView().getMap();
 		// map.loadElementsFromJson();
 
-        ZARouteCalculator rc = new ZARouteCalculator();
-        Area a = (Area) map.getAreas().toArray()[0];
-        List<MapNode> path = rc.calculateRoute(a.getCenterNode(), null, a);
-        System.out.println(path.toString());
+//        ZARouteCalculator rc = new ZARouteCalculator();
+//        Area a = (Area) map.getAreas().toArray()[0];
+//        List<MapNode> path = rc.calculateRoute(a.getCenterNode(), a);
+//        System.out.println(path.toString());
 	}
 
 }
