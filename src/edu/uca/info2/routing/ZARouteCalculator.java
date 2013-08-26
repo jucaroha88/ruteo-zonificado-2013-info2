@@ -34,7 +34,7 @@ public class ZARouteCalculator extends RouteCalculator {
 			List<Action> actions = search.search(problem);
 			for (Object action : actions) {
 				if (action instanceof OsmMoveAction) {
-					OsmMoveAction a = (OsmMoveAction) actions;
+					OsmMoveAction a = (OsmMoveAction) action;
 					result.addAll(a.getNodes());
 				}
 			}
@@ -44,10 +44,5 @@ public class ZARouteCalculator extends RouteCalculator {
 
 		return result;
 	}
-
-    public static void main(String[] args) {
-        ZARouteCalculator rc = new ZARouteCalculator();
-        //rc.calculateRoute();
-    }
 
 }
