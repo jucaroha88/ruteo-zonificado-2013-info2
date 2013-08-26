@@ -16,6 +16,10 @@ public class Segment {
 		return from;
 	}
 
+    public Segment inverted(){
+        return new Segment(this.to, this.from);
+    }
+
 	@Override
 	public String toString() {
 		return "Segment [from=" + from + ", to=" + to + "]";
