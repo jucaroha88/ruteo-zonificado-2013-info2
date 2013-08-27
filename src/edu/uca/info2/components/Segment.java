@@ -25,16 +25,8 @@ public class Segment {
 		return "Segment [from=" + from + ", to=" + to + "]";
 	}
 
-	public void setFrom(MapNode from) {
-		this.from = from;
-	}
-
 	public MapNode getTo() {
 		return to;
-	}
-
-	public void setTo(MapNode to) {
-		this.to = to;
 	}
 
 	@Override

@@ -13,11 +13,15 @@ import edu.uca.info2.components.Area;
 public class MapUtils {
 
 	// por default respetamos el sentido de las calles
-	private static boolean ignoreOneways = false;
+	private static boolean ignoreOneways = true;
 
 	public static void setIgnoreOneways(boolean ignoreOneways) {
 		MapUtils.ignoreOneways = ignoreOneways;
 	}
+
+    public static boolean getIgnoreOneways() {
+        return ignoreOneways;
+    }
 
 	public static List<MapNode> neighborsForNode(MapNode node, Area area) {
 		List<MapNode> neighbors = new ArrayList<MapNode>();

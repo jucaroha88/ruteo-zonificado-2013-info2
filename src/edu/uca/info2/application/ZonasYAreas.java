@@ -17,24 +17,23 @@ import java.util.List;
 
 /**
  * Aplicacion para visualizar las zonas y las areas descritas en los json
- * 
+ *
  * @author Toshiba
  */
 public class ZonasYAreas {
-	private static ZAMapViewFrame frame;
+    private static ZAMapViewFrame frame;
 
-	public static void main(String[] args) throws FileNotFoundException,
+    public static void main(String[] args) throws FileNotFoundException,
             IOException {
-		List<Area> lalista = new ArrayList<Area>();
 
-		frame = new ZAMapViewFrame();
-		ZAMap map = (ZAMap) frame.getView().getMap();
-		// map.loadElementsFromJson();
+        frame = new ZAMapViewFrame();
+        ZAMap map = (ZAMap) frame.getView().getMap();
+//        map.loadElementsFromJson();
 
-//        ZARouteCalculator rc = new ZARouteCalculator();
-//        Area a = (Area) map.getAreas().toArray()[0];
-//        List<MapNode> path = rc.calculateRoute(a.getCenterNode(), a);
-//        System.out.println(path.toString());
-	}
+        ZARouteCalculator rc = new ZARouteCalculator();
+        Area a = (Area) map.getAreas().toArray()[0];
+        List<MapNode> path = rc.calculateRoute(a.getCenterNode(), a);
+        System.out.println(path.toString());
+    }
 
 }
