@@ -9,8 +9,10 @@ import aimax.osm.data.entities.MapWay;
 import aimax.osm.data.entities.WayRef;
 import aimax.osm.routing.OsmMoveAction;
 import edu.uca.info2.components.Area;
+import edu.uca.info2.components.Segment;
 import edu.uca.info2.util.MapUtils;
 
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -64,6 +66,27 @@ public class ZAActionsFunction implements ActionsFunction {
                 }
             }
         }
+
+//        int beforeFiltering = neighbors.size();
+//        System.out.println("Before filtering" + beforeFiltering);
+
+        int k = state.getMaxSegmentPassThrough();
+
+        for (Iterator<Action> it = neighbors.iterator(); it.hasNext();) {
+            OsmMoveAction action = (OsmMoveAction) it.next();
+            Segment segment = new Segment(node, action.getTo());
+            ZASearchState nextState = new ZASearchState(segment,
+                    state.getSegmentsCounter(), state.getArea());
+
+            if (nextState.passThroughCountForSegment(segment) > k) {
+                it.remove();
+            }
+        }
+
+//        int afterFiltering = neighbors.size();
+//        assert beforeFiltering >= afterFiltering;
+//        System.out.println("After filtering" + afterFiltering);
+
 
         return neighbors;
     }
