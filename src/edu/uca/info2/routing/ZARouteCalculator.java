@@ -7,6 +7,7 @@ import aima.core.agent.Action;
 import aima.core.search.framework.GraphSearch;
 import aima.core.search.framework.Problem;
 import aima.core.search.framework.Search;
+import aima.core.search.informed.AStarSearch;
 import aima.core.search.uninformed.DepthFirstSearch;
 import aimax.osm.data.MapWayFilter;
 import aimax.osm.data.entities.MapNode;
@@ -28,7 +29,8 @@ public class ZARouteCalculator extends RouteCalculator {
 				new ZAActionsFunction(), new ZAResultsFunction(),
 				new ZAGoalTest());
 
-		Search search = new DepthFirstSearch(new GraphSearch());
+		//Search search = new DepthFirstSearch(new GraphSearch());
+        Search search = new AStarSearch(new GraphSearch(), new ZAUnvisitedSegmentsRemaining());
 
 		try {
 			List<Action> actions = search.search(problem);

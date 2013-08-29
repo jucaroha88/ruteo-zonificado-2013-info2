@@ -3,7 +3,6 @@ package edu.uca.info2.routing;
 import aimax.osm.data.entities.MapNode;
 import edu.uca.info2.components.Area;
 import edu.uca.info2.components.Segment;
-import edu.uca.info2.util.MapUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +18,7 @@ public class ZASearchState {
     private Area area;
 
     // maxima cant. de veces que se puede pasar por un segmento
-    private int maxSegmentPassThrough = 3;
+    private int maxSegmentPassThrough = 2;
 
     public ZASearchState(MapNode node, Area area) {
         this.node = node;
@@ -65,9 +64,9 @@ public class ZASearchState {
             segmentsCounter.put(segment, counter);
         } else {
 //            try {
-                Segment invertedSegment = segment.inverted();
-                counter = segmentsCounter.get(invertedSegment) + 1;
-                segmentsCounter.put(segment.inverted(), counter);
+            Segment invertedSegment = segment.inverted();
+            counter = segmentsCounter.get(invertedSegment) + 1;
+            segmentsCounter.put(segment.inverted(), counter);
 //            } catch (NullPointerException e) {
 //                // debug
 //                e.printStackTrace();
