@@ -64,17 +64,25 @@ public class ZASearchState {
             counter = segmentsCounter.get(segment) + 1;
             segmentsCounter.put(segment, counter);
         } else {
-            try {
+//            try {
                 Segment invertedSegment = segment.inverted();
                 counter = segmentsCounter.get(invertedSegment) + 1;
-                segmentsCounter.put(segment, counter);
-            } catch (NullPointerException e) {
-                // debug
-                e.printStackTrace();
-                System.out.println(area.isNodeInArea(segment.getFrom()));
-                System.out.println(area.isNodeInArea(segment.getTo()));
-                System.out.println(MapUtils.neighborsForNode(segment.getFrom(), area).contains(segment.getTo()));
-            }
+                segmentsCounter.put(segment.inverted(), counter);
+//            } catch (NullPointerException e) {
+//                // debug
+//                e.printStackTrace();
+//                System.out.println(area.isNodeInArea(segment.getFrom()));
+//                System.out.println(area.isNodeInArea(segment.getTo()));
+//                System.out.println(MapUtils.neighborsForNode(segment.getFrom(), area).contains(segment.getTo()));
+//            }
+        }
+    }
+
+    public int passThroughCountForSegment(Segment segment) {
+        if (segmentsCounter.containsKey(segment)) {
+            return segmentsCounter.get(segment);
+        } else {
+            return segmentsCounter.get(segment.inverted());
         }
     }
 
