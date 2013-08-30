@@ -8,3 +8,4 @@
 jpl.jar
 .idea/*
 *.iml
+/nbproject/private/

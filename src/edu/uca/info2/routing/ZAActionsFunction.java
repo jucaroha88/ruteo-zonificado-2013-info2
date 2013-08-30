@@ -67,11 +67,9 @@ public class ZAActionsFunction implements ActionsFunction {
             }
         }
 
-//        int beforeFiltering = neighbors.size();
-//        System.out.println("Before filtering" + beforeFiltering);
-
         int k = state.getMaxSegmentPassThrough();
 
+        // Filtramos los segmentos que ya han sido atravesados
         for (Iterator<Action> it = neighbors.iterator(); it.hasNext();) {
             OsmMoveAction action = (OsmMoveAction) it.next();
             Segment segment = new Segment(node, action.getTo());
@@ -82,11 +80,6 @@ public class ZAActionsFunction implements ActionsFunction {
                 it.remove();
             }
         }
-
-//        int afterFiltering = neighbors.size();
-//        assert beforeFiltering >= afterFiltering;
-//        System.out.println("After filtering" + afterFiltering);
-
 
         return neighbors;
     }

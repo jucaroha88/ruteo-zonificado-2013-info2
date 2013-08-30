@@ -7,6 +7,9 @@ package edu.uca.info2.application;
 import aimax.osm.data.entities.MapNode;
 import edu.uca.info2.components.Area;
 import edu.uca.info2.map.ZAMap;
+import edu.uca.info2.prolog.AsignacionVehiculoAreaHora;
+import edu.uca.info2.prolog.PrologWrapper;
+import edu.uca.info2.prolog.PrologWrapperException;
 import edu.uca.info2.routing.ZARouteCalculator;
 import edu.uca.info2.viewer.ZAMapViewFrame;
 
@@ -24,16 +27,22 @@ public class ZonasYAreas {
     private static ZAMapViewFrame frame;
 
     public static void main(String[] args) throws FileNotFoundException,
-            IOException {
+            IOException,
+            PrologWrapperException {
 
         frame = new ZAMapViewFrame();
         ZAMap map = (ZAMap) frame.getView().getMap();
-//        map.loadElementsFromJson();
 
-        ZARouteCalculator rc = new ZARouteCalculator();
-        Area a = (Area) map.getAreas().toArray()[0];
-        List<MapNode> path = rc.calculateRoute(a.getCenterNode(), a);
-        System.out.println(path.toString());
+//        ZARouteCalculator rc = new ZARouteCalculator();
+//        Area a = (Area) map.getAreas().toArray()[0];
+//        List<MapNode> path = rc.calculateRoute(a.getCenterNode(), a);
+//        System.out.println(path.toString());
+        
+        PrologWrapper plw = new PrologWrapper(map);
+        plw.consultar();
+        for(AsignacionVehiculoAreaHora a : plw.getAsignaciones()){
+            System.out.println(a);
+        }
     }
 
 }

@@ -107,7 +107,7 @@ public class ZAMap extends DefaultMap {
     protected void loadElementsFromJson() throws FileNotFoundException, IOException {
         loadZonesFromJson(FileUtils.getContent("zones.json"));
         loadZoneRestrictionsFromJson(FileUtils.getContent("restrictions.json"));
-        loadAreasFromJson(FileUtils.getContent("areas-debug.json"));
+        loadAreasFromJson(FileUtils.getContent("areas.json"));
         loadVehiclesFromJson(FileUtils.getContent("vehicles.json"));
     }
 
