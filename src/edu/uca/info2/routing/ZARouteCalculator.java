@@ -1,8 +1,5 @@
 package edu.uca.info2.routing;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import aima.core.agent.Action;
 import aima.core.search.framework.GraphSearch;
 import aima.core.search.framework.Problem;
@@ -15,36 +12,49 @@ import aimax.osm.routing.OsmMoveAction;
 import aimax.osm.routing.RouteCalculator;
 import edu.uca.info2.components.Area;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ZARouteCalculator extends RouteCalculator {
 
-	// siempre usamos el camino en auto
-	private static final int CAR_WAY = 1;
+    // siempre usamos el camino en auto
+    private static final int CAR_WAY = 1;
 
-	public List<MapNode> calculateRoute(MapNode from, Area area) {
-		List<MapNode> result = new ArrayList<MapNode>();
-		MapWayFilter wayFilter = super.createMapWayFilter(area.getMap(),
-				CAR_WAY);
+    public enum SearchAlgorithms {
+        DFS,
+        ASTAR,
+    }
 
-		Problem problem = new Problem(new ZASearchState(from, area),
-				new ZAActionsFunction(), new ZAResultsFunction(),
-				new ZAGoalTest());
+    public List<MapNode> calculateRoute(MapNode from, Area area, SearchAlgorithms sa) {
+        List<MapNode> result = new ArrayList<MapNode>();
+        MapWayFilter wayFilter = super.createMapWayFilter(area.getMap(),
+                CAR_WAY);
 
-		//Search search = new DepthFirstSearch(new GraphSearch());
-        Search search = new AStarSearch(new GraphSearch(), new ZAUnvisitedSegmentsRemaining());
+        Problem problem = new Problem(new ZASearchState(from, area),
+                new ZAActionsFunction(), new ZAResultsFunction(),
+                new ZAGoalTest());
 
-		try {
-			List<Action> actions = search.search(problem);
-			for (Object action : actions) {
-				if (action instanceof OsmMoveAction) {
-					OsmMoveAction a = (OsmMoveAction) action;
-					result.addAll(a.getNodes());
-				}
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+        Search search = null;
 
-		return result;
-	}
+        if (sa == SearchAlgorithms.DFS) {
+            search = new DepthFirstSearch(new GraphSearch());
+        } else if (sa == SearchAlgorithms.ASTAR) {
+            search = new AStarSearch(new GraphSearch(), new ZAUnvisitedSegmentsRemaining());
+        }
+
+        try {
+            List<Action> actions = search.search(problem);
+            for (Object action : actions) {
+                if (action instanceof OsmMoveAction) {
+                    OsmMoveAction a = (OsmMoveAction) action;
+                    result.addAll(a.getNodes());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return result;
+    }
 
 }
