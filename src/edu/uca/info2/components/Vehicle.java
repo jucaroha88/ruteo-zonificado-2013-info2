@@ -13,20 +13,21 @@ public class Vehicle {
     
         public static final String pl_compound_name = "auto";
     
-        public static final int velocidad=20;
+        //public static final int velocidad=20;
+        
+        private int velocidad;
 	
 	private String vehicleId;
 	private int autonomy;
-	
-//        public Vehicle(Term term) throws PrologWrapperException{
-//            if(!term.name().equals(pl_compound_name)){
-//                throw new PrologWrapperException("esto no es un compound 'auto'");
-//            }
-//            vehicleId = term.arg(1).name();
-//            autonomy = term.arg(2).intValue();
-//            
-//        }
-	
+
+        public int getVelocidad() {
+            return velocidad;
+        }
+
+        public void setVelocidad(int velocidad) {
+            this.velocidad = velocidad;
+        }
+
 	public String getVehicleId() {
 		return vehicleId;
 	}

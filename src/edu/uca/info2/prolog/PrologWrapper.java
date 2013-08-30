@@ -39,6 +39,8 @@ public class PrologWrapper {
     
     private ZAMap map;
     
+    private Query lastQuery;
+    
     public PrologWrapper(ZAMap map) throws PrologWrapperException{
         this.map=map;
         this.areas=map.getAreas();
@@ -50,6 +52,12 @@ public class PrologWrapper {
             throw new PrologWrapperException("No se pudo consultar la base de conocimientos "+knowledgeBaseFile);
         }
     }
+
+    public Query getLastQueryString() {
+        return lastQuery;
+    }
+    
+    
     
     /*
      * Realiza la consulta a la base de conocimientos, utilizando
@@ -87,7 +95,8 @@ public class PrologWrapper {
         String variableName = "Asignaciones";
         Variable pl_variable_asignaciones = new Variable(variableName);
         Query query = new Query("recorridosValidos", new Term[]{pl_variable_asignaciones, pl_vehiculos_list, pl_areas_list});
-
+        
+        this.lastQuery = query;
         
         //extraer resultados
         this.asignaciones=new ArrayList<AsignacionVehiculoAreaHora>();
@@ -122,6 +131,8 @@ public class PrologWrapper {
         ZAMap map = (ZAMap)frame.getView().getMap();
         PrologWrapper prologuito = new PrologWrapper(map);
         prologuito.consultar();
+        
+        System.out.println(prologuito.getLastQueryString());
         
         for(AsignacionVehiculoAreaHora a : prologuito.getAsignaciones()){
             System.out.println(a);

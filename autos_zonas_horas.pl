@@ -72,14 +72,17 @@ satisfaceAutonomia(Auto, [_|Rt], SumaCosto) :- satisfaceAutonomia(Auto,Rt,SumaCo
 %todavia libres son las horas de cada recorrido
 %asignaHoras(?Recorridos)
 asignaHoras([]) :- !.
-asignaHoras([ recorrido(auto(_,_,Velocidad),
-						zona(_,Distancia,HoraInicio,HoraFin),
-						Hora) |Rt])
-							:-
+asignaHoras([Rh|Rt])	:-
+						Rh = recorrido(		auto(_,_,Velocidad),
+											zona(_,Distancia,HoraInicio,HoraFin),
+											Hora
+										),
+
 						TiempoNecesario is ceil(Distancia/Velocidad),		%se redondea hacia arriba
 						Hora in 0..23,										%hora va de 0 a 23
 						Hora #>= HoraInicio,
 						Hora + TiempoNecesario - 1 #=< HoraFin,
+						horariosDelAutoNoSeSolapan(Rh,Rt),
 						asignaHoras(Rt).
 						
 						
@@ -87,6 +90,10 @@ asignaHoras([ recorrido(auto(_,_,Velocidad),
 %horariosDelAutoNoSeSolapan(+Recorrido, +OtrosRecorridos)	hace que el auto de este recorrido no este en
 %															otros lugares dentro del mismo horario.
 horariosDelAutoNoSeSolapan(_,[]) :- !.
+horariosDelAutoNoSeSolapan( Recorrido1 , [Recorrido2|Rt] )		 :- 	Recorrido1 = recorrido(Auto1,_,_),
+																					Recorrido2 = recorrido(Auto2,_,_),
+																					not(Auto1=Auto2),
+																					horariosDelAutoNoSeSolapan(Recorrido1, Rt).
 horariosDelAutoNoSeSolapan(	Recorrido1,	[Recorrido2|Rt])
 								:-
 								Recorrido1 = recorrido(Auto , zona(_,Distancia1,_,_), Hora1),
@@ -97,7 +104,7 @@ horariosDelAutoNoSeSolapan(	Recorrido1,	[Recorrido2|Rt])
 								Tiempo2 is ceil(Distancia2/Velocidad),
 								Hora1 + Tiempo1 #=< Hora2  #\/  Hora2 + Tiempo2 #=< Hora1,
 								horariosDelAutoNoSeSolapan(Recorrido1, Rt).
-horariosDelAutoNoSeSolapan(R,[_|Rt]) :- horariosDelAutoNoSeSolapan(R,Rt).
+%horariosDelAutoNoSeSolapan(R,[_|Rt]) :- horariosDelAutoNoSeSolapan(R,Rt).
 								
 								
 								
