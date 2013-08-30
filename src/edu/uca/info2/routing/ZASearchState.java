@@ -20,6 +20,8 @@ public class ZASearchState {
     // maxima cant. de veces que se puede pasar por un segmento
     private int maxSegmentPassThrough = 2;
 
+    public static int counter = 0;
+
     public ZASearchState(MapNode node, Area area) {
         this.node = node;
         this.area = area;
@@ -29,6 +31,8 @@ public class ZASearchState {
         for (Segment segment : segments) {
             segmentsCounter.put(segment, 0);
         }
+
+        counter++;
     }
 
     public ZASearchState(Segment segment, HashMap<Segment, Integer> segmentsCounter, Area area) {
@@ -42,6 +46,7 @@ public class ZASearchState {
 
         // incrementamos el ultimo segmento atravezado
         incrementSegmentCounter(segment);
+        counter++;
     }
 
     public Area getArea() {
