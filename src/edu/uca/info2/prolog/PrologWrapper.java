@@ -53,7 +53,7 @@ public class PrologWrapper {
         }
     }
 
-    public Query getLastQueryString() {
+    public Query getLastQuery() {
         return lastQuery;
     }
     
@@ -132,7 +132,7 @@ public class PrologWrapper {
         PrologWrapper prologuito = new PrologWrapper(map);
         prologuito.consultar();
         
-        System.out.println(prologuito.getLastQueryString());
+        System.out.println(prologuito.getLastQuery());
         
         for(AsignacionVehiculoAreaHora a : prologuito.getAsignaciones()){
             System.out.println(a);

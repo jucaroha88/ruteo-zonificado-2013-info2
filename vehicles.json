@@ -1,1 +1,1 @@
-[{"vehicleId":"V-1","autonomy":150, "velocidad":40},{"vehicleId":"V-2","autonomy":200, "velocidad":80}]
+[{"vehicleId":"V-1","autonomy":300, "velocidad": 40},{"vehicleId":"V-2","autonomy":100, "velocidad": 80},{"vehicleId":"V-3","autonomy":200, "velocidad": 60}]
