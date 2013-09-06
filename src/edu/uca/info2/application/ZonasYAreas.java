@@ -14,8 +14,7 @@ import edu.uca.info2.routing.ZARouteCalculator;
 import edu.uca.info2.routing.ZASearchState;
 import edu.uca.info2.viewer.ZAMapViewFrame;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.List;
 
 /**
@@ -32,22 +31,37 @@ public class ZonasYAreas {
 
         frame = new ZAMapViewFrame();
         ZAMap map = (ZAMap) frame.getView().getMap();
-
         ZARouteCalculator rc = new ZARouteCalculator();
-//        Area a = (Area) map.getAreas().toArray()[0];
+        StringBuilder sb = new StringBuilder();
 
         for (Area a : map.getAreas()) {
             List<MapNode> path = rc.calculateRoute(a.getCenterNode(), a, ZARouteCalculator.SearchAlgorithms.DFS);
             System.out.println(path.toString());
+            sb.append(path.toString());
+            sb.append("\n");
             System.out.println("Nodos expandidos:" + ZASearchState.counter);
             ZASearchState.counter = 0;
         }
+
+        saveResultToFile("resultado-java.txt", sb.toString());
+        sb = new StringBuilder();
 
         PrologWrapper plw = new PrologWrapper(map);
         plw.consultar();
         for (AsignacionVehiculoAreaHora a : plw.getAsignaciones()) {
             System.out.println(a);
+            sb.append(a);
+            sb.append("\n");
         }
+
+        saveResultToFile("resultado-prolog.txt", sb.toString());
+    }
+
+    private static void saveResultToFile(String filename,String result) throws IOException{
+        File file = new File(filename);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        writer.write(result);
+        writer.close();
     }
 
 }
